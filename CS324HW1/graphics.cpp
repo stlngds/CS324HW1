@@ -2,15 +2,17 @@
 
 #include "graphics.h"
 Point pg;
+Viewport v;
+Window w;
 
-void SetViewport(Viewport v, double vp_min_x, double vp_min_y, double vp_max_x, double vp_max_y) {
+void SetViewport(double vp_min_x, double vp_min_y, double vp_max_x, double vp_max_y) {
 	v.vp_min_x = vp_min_x;
 	v.vp_min_y = vp_min_y;
 	v.vp_max_x = vp_max_x;
 	v.vp_max_y = vp_max_y;
 }
 
-void SetWindow(Window w, double win_min_x, double win_min_y, double win_max_x, double win_max_y) {
+void SetWindow(double win_min_x, double win_min_y, double win_max_x, double win_max_y) {
 	w.win_min_x = win_min_x;
 	w.win_min_y = win_min_y;
 	w.win_max_x = win_max_x;
@@ -32,7 +34,7 @@ void DrawTo2D(double xd, double yd, Canvas c) {
     MoveTo2D(xd, yd);
 }
 
-Point WindowToViewport(Window w, Viewport v, double x, double y) {
+Point WindowToViewport(double x, double y) {
 	//confine passed coordinates to window bounds
 	if (x > w.win_max_x)
 		x = w.win_max_x;
@@ -51,6 +53,8 @@ Point WindowToViewport(Window w, Viewport v, double x, double y) {
 
 void InitGraphics() {
     MoveTo2D(0.0, 0.0);
+    SetViewport(-1.0, -1.0, 1.0, 1.0);
+    SetWindow(-2.0, -2.0, 3.0, 3.0);
 }
 
 

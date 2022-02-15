@@ -31,4 +31,11 @@
 *.out
 *.app
 
-.vs/
+*.vcxproj*
+*.ipch
+*.db
+.vs/CS324HW1/v17/.suo
+.vs/CS324HW1/v17/ipch/AutoPCH/e3035eaa2106aa07/GRAPHICS.ipch
+.vs/CS324HW1/v17/ipch/AutoPCH/a1670deefe388fff/MAIN.ipch
+.vs/CS324HW1/v17/Browse.VC.db
+*.ipch

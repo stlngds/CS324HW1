@@ -23,12 +23,6 @@ struct Viewport {
 	double vp_max_y;
 };
 
-void SetViewport(Viewport v, double vp_min_x, double vp_min_y, double vp_max_x, double vp_max_y);
-void SetWindow(Window w, double win_min_x, double win_min_y, double win_max_x, double win_max_y);
-void MoveTo2D(double x, double y);
-void DrawTo2D(double xd, double yd, Canvas c);
-Point WindowToViewport(Window w, Viewport v, double x, double y);
-
 
 
 //Bolden's provided code
@@ -72,7 +66,12 @@ private:
     color background;
 };
 
-
+//Prototypes
 void Line(Canvas& c, int x1, int y1, int x2, int y2, color color);
-
 void SaveCanvasToFile(Canvas const& canvas, std::string const& fileName);
+void SetViewport(double vp_min_x, double vp_min_y, double vp_max_x, double vp_max_y);
+void SetWindow(double win_min_x, double win_min_y, double win_max_x, double win_max_y);
+void MoveTo2D(double x, double y);
+void DrawTo2D(double xd, double yd, Canvas c);
+Point WindowToViewport(double x, double y);
+void InitGraphics();
