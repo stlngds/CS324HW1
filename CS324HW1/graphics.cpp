@@ -5,6 +5,7 @@ Point pg;
 Viewport v;
 Window w;
 
+//This doesn't *really* need to be a function right now; in it's current form it's just a formality for the assignment.
 void SetViewport(double vp_min_x, double vp_min_y, double vp_max_x, double vp_max_y) {
 	v.vp_min_x = vp_min_x;
 	v.vp_min_y = vp_min_y;
@@ -12,6 +13,7 @@ void SetViewport(double vp_min_x, double vp_min_y, double vp_max_x, double vp_ma
 	v.vp_max_y = vp_max_y;
 }
 
+//This doesn't *really* need to be a function right now; in it's current form it's just a formality for the assignment.
 void SetWindow(double win_min_x, double win_min_y, double win_max_x, double win_max_y) {
 	w.win_min_x = win_min_x;
 	w.win_min_y = win_min_y;
@@ -19,21 +21,25 @@ void SetWindow(double win_min_x, double win_min_y, double win_max_x, double win_
 	w.win_max_y = win_max_y;
 }
 
+//This doesn't *really* need to be a function right now; in it's current form it's just a formality for the assignment.
 void MoveTo2D(double x, double y) {
     pg.x = x;
     pg.y = y;
 }
 
-void DrawTo2D(double xd, double yd, Canvas c) {
+//
+void DrawTo2D(double xd, double yd, Canvas& c) {
     int x = round(xd);
     int y = round(yd);
     int gx = round(pg.x);
     int gy = round(pg.y);
 
+    //printf("x: %i, y: %i, gx: %i, gy: %i\n", x, y, gx, gy);
     Line(c, gx, gy, x, y, colors::BLACK);
     MoveTo2D(xd, yd);
 }
 
+//
 Point WindowToViewport(double x, double y) {
 	//confine passed coordinates to window bounds
 	if (x > w.win_max_x)
@@ -51,15 +57,35 @@ Point WindowToViewport(double x, double y) {
 	return p;
 }
 
+//
+Point ViewportToCanvas(double x, double y, int dimx, int dimy) {
+    //confine passed coordinates to viewport bounds
+    if (x > v.vp_max_x)
+        x = v.vp_max_x;
+    if (x < v.vp_min_x)
+        x = v.vp_min_x;
+    if (y > v.vp_max_y)
+        y = v.vp_max_y;
+    if (y < v.vp_min_y)
+        y = v.vp_min_y;
+
+    Point p;
+    p.x = dimx * ((x - v.vp_min_x) / (v.vp_max_x - v.vp_min_x));
+    p.y = dimy * ((-y - v.vp_min_y) / (v.vp_max_y - v.vp_min_y));
+    return p;
+}
+
+//Sets the global Viewport, Window, and Point to reasonable starting values.
 void InitGraphics() {
     MoveTo2D(0.0, 0.0);
     SetViewport(-1.0, -1.0, 1.0, 1.0);
-    SetWindow(-2.0, -2.0, 3.0, 3.0);
+    SetWindow(-2.0, -2.0, 9.0, 9.0);
 }
 
 
-
+//////////////////////////////////////
 //Bolden's provided code
+//////////////////////////////////////
 
 Canvas::Canvas(std::size_t w, std::size_t h, color bg)
     : width(w), height(h),
