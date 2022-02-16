@@ -3,6 +3,7 @@
  *
  * Homework 1 for CS 324 (Computer Graphics), Spring 2022.
  * Graphs several math functions and outputs them as a .ppm file, mapping the Window-space that the functions operate in to Viewport-space to Canvas/Pixel-space.
+ * TODO: Create a function that does both WindowToViewport and ViewportToCanvas in one go - would save lines.
  *---------------------------------------------------------------------
  */
 
@@ -32,7 +33,7 @@ int main() {
 
 	//Plot the function y = 3.0*e^(-0.33x)*sin(3x) for x = 0 to x = 3*pi, with a continuous line.
 	Canvas gc(size, size, colors::WHITE); //Background color is white.
-	SetWindow(0, -10, (3.0 * PI), 10); //What is drawn on our canvas will be all the space wrt the function from x = 0 to 3pi, and y = -10 to 10.
+	SetWindow(0, -10, (3.0 * PI), 10); //What is drawn on our canvas will be all the space wrt the function from x = 0 to 3pi, and y = -10 to 10. Shrinking y to range from -5 to 5 makes the curve more extreme!
 	//Drawing axes
 	p = WindowToViewport(3 * PI, 0);
 	p = ViewportToCanvas(p.x, p.y, size, size);
@@ -118,7 +119,7 @@ int main() {
 
 	//////////////////////////////////////
 
-	//Plot the function y = (3x^2 - 12x - 15) / (x^2 - 3x - 10) for x = -6 to 6, with a dashed line.
+	//Plot the above with a dashed line.
 	Canvas gc4(size, size, colors::WHITE);
 	SetWindow(-6, -10, 6, 15);
 	//Drawing axes
@@ -194,9 +195,9 @@ int main() {
 
 	//////////////////////////////////////
 
-	//Plot the function y = 3.0*e^(-0.33x)*sin(3x) for x = 0 to x = 3*pi, with a continuous line with the non-default Viewport dimensions.
+	//Plot the function y = 3.0*e^(-0.33x)*sin(3x) for x = 0 to x = 3*pi, with a continuous line with the non-default Viewport coordinates.
 	Canvas gc6(size, size, colors::WHITE);
-	SetWindow(0, -10, (3.0 * PI), 10);
+	SetWindow(0, -10, (3 * PI), 10);
 	SetViewport(-0.5, -0.5, 1.5, 1.0);
 	//Drawing axes
 	p = WindowToViewport(3 * PI, 0);

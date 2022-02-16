@@ -51,12 +51,20 @@ Point WindowToViewport(double x, double y) {
 		y = w.win_min_y;
 
 	Point p;
-	p.x = (((x - w.win_min_x) / (w.win_max_x - w.win_min_x)) * (v.vp_max_x - v.vp_min_x)) + v.vp_min_x;
-	p.y = (((y - w.win_min_y) / (w.win_max_y - w.win_min_y)) * (v.vp_max_y - v.vp_min_y)) + v.vp_min_y;
+    /*
+    * The relative position of the point in the Window and the Viewport are the same, therefore:
+    * (x_w - x_wmin) / (x_wmax - x_wmin) = (x_v - x_vmin) / (x_vmax - x_vmin).
+    * Solving for x_v, we get x_vmin + ((x_w - x_wmin) * (x_vmax - x_vmin)) / (x_wmax - x_wmin).
+    * ex. For some window where x_wmin = -2 and x_wmax = 8, and some viewport where x_vmin = -1 and x_vmax = 1, we want to map the window coordinate x = 3 (which would be right in the middle of the Window) to Viewport space. Therefore:
+    * x_v = -1 + ((3 + 2) * (1 + 1)) / (8 + 2) = -1 + 10/10 = 0 (which is right in the middle of the Viewport).
+    * Same principles applies to the y coordinates.
+    */
+    p.x = v.vp_min_x + (x - w.win_min_x) * ((v.vp_max_x - v.vp_min_x) / (w.win_max_x - w.win_min_x));
+	p.y = v.vp_min_y + (y - w.win_min_y) * ((v.vp_max_y - v.vp_min_y) / (w.win_max_y - w.win_min_y));
 	return p;
 }
 
-//Converts Viewport coordinates to Canvas coordinates (which still need to be round()ed to ints).
+//Converts cartesian Viewport coordinates to device-space Canvas coordinates (which still need to be round()ed to ints).
 Point ViewportToCanvas(double x, double y, int dimx, int dimy) {
     //Confine passed coordinates to viewport bounds.
     if (x > v.vp_max_x)
@@ -69,7 +77,15 @@ Point ViewportToCanvas(double x, double y, int dimx, int dimy) {
         y = v.vp_min_y;
 
     Point p;
+    /*
+    * Given the dimensions of the canvas and a viewpoint coordinate, find the matching canvas coordinate. Very similar to the WindowToViewport equation.
+    * (x_c / dimx) = (x_v - x_vmin) / (x_vmax - x_vmin)
+    * Solving for x_c, we get dimx * (x_v - x_vmin) / (x_vmax - x_vmin).
+    * ex. For some viewport where x_vmin = -1 and x_vmax = 1, and a canvas where dimx = 1000, we want to map the cartesian viewport coordinate x_v = 0.5 to canvas/pixel-space (which would be 3/4ths across the canvas from left to right). Therefore:
+    * x_c = 1000 * (0.5 + 1) / (1 + 1) = 1000 * 0.75 = 750 (indeed, 3/4ths across the canvas from left to right).
+    */
     p.x = dimx * ((x - v.vp_min_x) / (v.vp_max_x - v.vp_min_x));
+    //the y dimension is flipped in canvas-space, compared to cartesian space; 0 is at the very top.
     p.y = dimy * ((-y - v.vp_min_y) / (v.vp_max_y - v.vp_min_y));
     return p;
 }
