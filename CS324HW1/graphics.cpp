@@ -5,7 +5,7 @@ Point pg;
 Viewport v;
 Window w;
 
-//This doesn't *really* need to be a function right now; in it's current form it's just a formality for the assignment.
+//This doesn't *really* need to be a function right now; in it's current form it's just a formality for the assignment. Assigns the global Viewport bounds.
 void SetViewport(double vp_min_x, double vp_min_y, double vp_max_x, double vp_max_y) {
 	v.vp_min_x = vp_min_x;
 	v.vp_min_y = vp_min_y;
@@ -13,7 +13,7 @@ void SetViewport(double vp_min_x, double vp_min_y, double vp_max_x, double vp_ma
 	v.vp_max_y = vp_max_y;
 }
 
-//This doesn't *really* need to be a function right now; in it's current form it's just a formality for the assignment.
+//This doesn't *really* need to be a function right now; in it's current form it's just a formality for the assignment. Assigns the global Window bounds.
 void SetWindow(double win_min_x, double win_min_y, double win_max_x, double win_max_y) {
 	w.win_min_x = win_min_x;
 	w.win_min_y = win_min_y;
@@ -21,27 +21,26 @@ void SetWindow(double win_min_x, double win_min_y, double win_max_x, double win_
 	w.win_max_y = win_max_y;
 }
 
-//This doesn't *really* need to be a function right now; in it's current form it's just a formality for the assignment.
+//This doesn't *really* need to be a function right now; in it's current form it's just a formality for the assignment. Assigns the global canvas-space Point.
 void MoveTo2D(double x, double y) {
     pg.x = x;
     pg.y = y;
 }
 
-//
-void DrawTo2D(double xd, double yd, Canvas& c) {
+void DrawTo2D(double xd, double yd, Canvas& c, color col) {
     int x = round(xd);
     int y = round(yd);
     int gx = round(pg.x);
     int gy = round(pg.y);
 
-    //printf("x: %i, y: %i, gx: %i, gy: %i\n", x, y, gx, gy);
-    Line(c, gx, gy, x, y, colors::BLACK);
+    //printf("x: %i, y: %i, gx: %i, gy: %i\n", x, y, gx, gy); //Debug.
+    Line(c, gx, gy, x, y, col);
     MoveTo2D(xd, yd);
 }
 
-//
+//Converts Window coordinates to Viewport coordinates.
 Point WindowToViewport(double x, double y) {
-	//confine passed coordinates to window bounds
+	//Confine passed coordinates to window bounds.
 	if (x > w.win_max_x)
 		x = w.win_max_x;
 	if (x < w.win_min_x)
@@ -57,9 +56,9 @@ Point WindowToViewport(double x, double y) {
 	return p;
 }
 
-//
+//Converts Viewport coordinates to Canvas coordinates (which still need to be round()ed to ints).
 Point ViewportToCanvas(double x, double y, int dimx, int dimy) {
-    //confine passed coordinates to viewport bounds
+    //Confine passed coordinates to viewport bounds.
     if (x > v.vp_max_x)
         x = v.vp_max_x;
     if (x < v.vp_min_x)

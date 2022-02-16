@@ -77,7 +77,7 @@ void SaveCanvasToFile(Canvas const& canvas, std::string const& fileName);
 void SetViewport(double vp_min_x, double vp_min_y, double vp_max_x, double vp_max_y);
 void SetWindow(double win_min_x, double win_min_y, double win_max_x, double win_max_y);
 void MoveTo2D(double x, double y);
-void DrawTo2D(double xd, double yd, Canvas& c);
+void DrawTo2D(double xd, double yd, Canvas& c, color col = colors::BLACK);
 Point WindowToViewport(double x, double y);
 Point ViewportToCanvas(double x, double y, int dimx, int dimy);
 void InitGraphics();
